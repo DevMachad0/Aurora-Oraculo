@@ -15,28 +15,18 @@ def synthesize_speech(markdown_text, output_file="static/output.mp3"):
 
     engine = pyttsx3.init()
 
-    # Configura a voz jovem feminina
+    # Configura a voz feminina
     voices = engine.getProperty('voices')
-    young_female_voice = None
+    female_voice = None
     for voice in voices:
-        if "young" in voice.name.lower() or "jovem" in voice.name.lower():
-            young_female_voice = voice
+        if "female" in voice.name.lower() or "feminina" in voice.name.lower():
+            female_voice = voice
             break
 
-    if young_female_voice:
-        engine.setProperty('voice', young_female_voice.id)
+    if female_voice:
+        engine.setProperty('voice', female_voice.id)
     else:
-        print("Voz jovem feminina não encontrada. Tentando outra voz feminina.")
-        # Fallback para qualquer voz feminina
-        for voice in voices:
-            if "female" in voice.name.lower() or "feminina" in voice.name.lower():
-                young_female_voice = voice
-                break
-
-    if young_female_voice:
-        engine.setProperty('voice', young_female_voice.id)
-    else:
-        print("Nenhuma voz feminina encontrada. Usando a voz padrão.")
+        print("Voz feminina não encontrada. Usando a voz padrão.")
 
     # Configura a velocidade da fala
     engine.setProperty('rate', 200)  # Velocidade ajustada para leitura mais natural
