@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, send_file, send_from_directory
+from flask_compress import Compress
 from modulo.api_connector import search_topic
 from modulo.text_to_speech import synthesize_speech
 import markdown  # Reintroduzindo a biblioteca markdown
 import os
 
 app = Flask(__name__)
+Compress(app)  # Ativa compactação para respostas HTTP
 
 # Lista de palavras-chave proibidas
 PROHIBITED_TOPICS = ["pornografia", "crime", "violência", "terrorismo", "drogas"]
@@ -75,4 +77,4 @@ if __name__ == '__main__':
     # Obtém a porta da variável de ambiente ou usa 5000 como padrão
     port = int(os.environ.get('PORT', 5000))
     # Configura o Flask para rodar no host 0.0.0.0 e na porta especificada
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)

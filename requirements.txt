@@ -6,3 +6,4 @@ google-genai==0.2.0
 requests==2.31.0
 pyttsx3==2.90
 gTTS==2.3.2
+Flask-Compress==1.13

@@ -14,6 +14,6 @@ def synthesize_speech(markdown_text, output_file="static/output.mp3"):
     text = markdown_to_plain_text(markdown_text)
 
     # Gera o áudio usando gTTS
-    tts = gTTS(text, lang="pt-br")
+    tts = gTTS(text, lang="pt")
     tts.save(output_file)
     print(f"Áudio salvo em {output_file}")
