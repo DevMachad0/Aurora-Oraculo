@@ -13,7 +13,8 @@ def synthesize_speech(markdown_text, output_file="static/output.mp3"):
     # Converte Markdown para texto simples
     text = markdown_to_plain_text(markdown_text)
 
-    engine = pyttsx3.init()
+    # Inicializa o pyttsx3 com o driver especificado
+    engine = pyttsx3.init(driverName='dummy')  # Substitua 'dummy' por 'sapi5' (Windows) ou 'nsss' (macOS)
 
     # Configura a voz feminina
     voices = engine.getProperty('voices')
