@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, send_from_directory
 from modulo.api_connector import search_topic
 from modulo.text_to_speech import synthesize_speech
 import markdown  # Reintroduzindo a biblioteca markdown
@@ -65,6 +65,11 @@ def audio():
     if os.path.exists(audio_path):
         return send_file(audio_path, as_attachment=True)
     return "Áudio não encontrado.", 404
+
+@app.route('/ads.txt')
+def ads_txt():
+    """Serve o arquivo ads.txt para o Google AdSense."""
+    return send_from_directory(directory='.', path='ads.txt', mimetype='text/plain')
 
 if __name__ == '__main__':
     # Obtém a porta da variável de ambiente ou usa 5000 como padrão
