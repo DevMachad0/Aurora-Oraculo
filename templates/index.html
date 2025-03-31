@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Oráculo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        let isSpeaking = false; // Estado da leitura
+        let speechInstance = null; // Instância do SpeechSynthesisUtterance
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function toggleSpeech() {
+            const contentElement = document.querySelector('.markdown-content');
+            if (!contentElement) {
+                alert('Nenhum conteúdo disponível para leitura.');
+                return;
+            }
+
+            const text = contentElement.innerText;
+
+            if (isSpeaking) {
+                // Pausa a leitura
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                console.log('Leitura pausada.');
+            } else {
+                // Inicia ou reinicia a leitura
+                speechInstance = new SpeechSynthesisUtterance(text);
+                speechInstance.lang = 'pt-BR'; // Define o idioma como português do Brasil
+                speechInstance.rate = 2; // Velocidade normal
+
+                // Seleciona uma voz feminina em português do Brasil
+                const voices = window.speechSynthesis.getVoices();
+                const femaleVoice = voices.find(voice => voice.lang === 'pt-BR' && voice.name.toLowerCase().includes('feminina'));
+                if (femaleVoice) {
+                    speechInstance.voice = femaleVoice;
+                } else {
+                    console.warn('Nenhuma voz feminina encontrada. Usando a voz padrão.');
+                }
+
+                // Define o estado como falando
+                isSpeaking = true;
+
+                // Finaliza a leitura ao terminar
+                speechInstance.onend = () => {
+                    isSpeaking = false;
+                    console.log('Leitura concluída.');
+                };
+
+                window.speechSynthesis.speak(speechInstance);
+                console.log('Leitura iniciada.');
+            }
+        }
+
+        // Garante que as vozes sejam carregadas antes de usar
+        window.speechSynthesis.onvoiceschanged = () => {
+            console.log('Vozes carregadas:', window.speechSynthesis.getVoices());
+        };
+    </script>
+</head>
+<body>
+    <div class="page-container">
+        <div class="ads-container left-ads">
+            <!-- Código do AdSense ou espaço para anúncios -->
+            <p>Espaço para anúncios</p>
+        </div>
+        <div class="main-container">
+            <div class="search-container">
+                <div class="title-container">
+                    <a href="https://aurorati.tech/" target="_blank" title="Visite Aurora TI">
+                        <img src="{{ url_for('static', filename='image/Design sem nome3.png') }}" alt="Logo Aurora Oráculo" class="title-image">
+                    </a>
+                    <h1>Aurora Oráculo</h1>
+                </div>
+                <p>Descubra informações detalhadas e confiáveis sobre qualquer tema.</p>
+                <form action="/search" method="get" onsubmit="showLoading()">
+                    <input type="text" name="query" placeholder="Digite um tema de pesquisa" required>
+                    <button type="submit">Pesquisar</button>
+                </form>
+            </div>
+            <div id="loading" class="loading-animation" style="display: none;">
+                <div class="spinner"></div>
+                <p>Carregando resultados...</p> 
+            </div>
+            <div class="response-container">
+                {% if query %}
+                    <h3>Resultados para: "{{ query }}"</h3>
+                    <div class="audio-container">
+                        <audio controls>
+                            <source src="{{ url_for('static', filename='output.mp3') }}" type="audio/mpeg">
+                            Seu navegador não suporta o elemento de áudio.
+                        </audio>
+                    </div>
+                    {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% else %}
+                        <div class="markdown-content">
+                            {{ results.markdown_content|safe }}
+                        </div>
+                    {% endif %}
+                    <div class="sources">
+                        <h4>Fontes de Busca:</h4>
+                        {{ results.sources_html|safe }}
+                    </div>
+                {% elif error %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ads-container right-ads">
+            <!-- Código do AdSense ou espaço para anúncios -->
+            <p>Espaço para anúncios</p>
+        </div>
+    </div>
+</body>
+</html>
