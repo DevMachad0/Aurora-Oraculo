@@ -11,6 +11,3 @@ apt-get install -y libespeak1
 
 # Instala as dependências do Python
 pip install -r requirements.txt
-
-# Verifica se a biblioteca libespeak está acessível
-ldconfig
