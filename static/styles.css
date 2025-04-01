@@ -293,3 +293,48 @@ body {
     width: auto; /* Mantém a proporção da imagem */
     object-fit: contain; /* Garante que a imagem seja contida no espaço */
 }
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 768px) {
+    .page-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .ads-container {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .ads-container.left-ads {
+        order: 2; /* Move para o final */
+    }
+
+    .main-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .search-container input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-container button {
+        width: 100%;
+    }
+
+    .response-container h3 {
+        font-size: 1.2rem;
+    }
+
+    .markdown-content {
+        font-size: 0.9rem;
+    }
+
+    .audio-container audio {
+        width: 100%;
+    }
+}
